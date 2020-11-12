@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:example/src/custom_midamon_page.dart';
 import 'package:example/src/read_only_view.dart';
 import 'package:file/local.dart';
 import 'package:flutter/material.dart';
@@ -152,6 +153,17 @@ class _HomePageState extends State<HomePage> {
           visualDensity: VisualDensity.compact,
           onTap: _decoratedField,
         ),
+        ListTile(
+          title: Text('Midamon\'s branch custom page', style: headerStyle),
+          // dense: true,
+          visualDensity: VisualDensity.compact,
+        ),
+        ListTile(
+          title: Text('¶   Custom Page', style: itemStyle),
+          dense: true,
+          visualDensity: VisualDensity.compact,
+          onTap: _customPage,
+        ),
       ],
     );
   }
@@ -229,6 +241,18 @@ class _HomePageState extends State<HomePage> {
         builder: (BuildContext context) => SettingsProvider(
           settings: _settings,
           child: DecoratedFieldDemo(),
+        ),
+      ),
+    );
+  }
+
+  void _customPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => SettingsProvider(
+          settings: _settings,
+          child: CustomMidamonPage(),
         ),
       ),
     );
