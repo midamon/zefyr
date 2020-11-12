@@ -11,7 +11,12 @@ class _CustomMidamonPageState extends State<CustomMidamonPage> {
   ZefyrController _controller;
   FocusNode _focusNode;
 
-  final colors = <Color>[Colors.black, Colors.green, Colors.purple];
+  final colors = <Color>[
+    Colors.black,
+    Colors.green,
+    Colors.purple,
+    Colors.orange,
+  ];
 
   @override
   void initState() {
@@ -76,9 +81,9 @@ Widget stooryToggleButton(
   VoidCallback onPressed,
 ) {
   return CircleColor(
-    color: color,
-    innerCircleColor: color,
-    borderColor: Colors.greenAccent,
+    color: isToggled ? Colors.transparent : color,
+    innerCircleColor: isToggled ? color : Colors.transparent,
+    borderColor: isToggled ? Colors.green : Colors.transparent,
     onPressed: onPressed,
   );
 }
@@ -109,7 +114,6 @@ class CircleColor extends StatelessWidget {
       fillColor: color,
       splashColor: Colors.transparent,
       highlightColor: Colors.white,
-      animationDuration: Duration(microseconds: 1),
       constraints: BoxConstraints(),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       padding: EdgeInsets.all(20),

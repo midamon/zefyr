@@ -314,15 +314,16 @@ class _ToggleColorButtonState extends State<ToggleColorButton> {
 
   void _didChangeEditingValue() {
     setState(() {
-      _isToggled =
-          widget.controller.getSelectionStyle().contains(NotusAttribute.color);
+      _isToggled = _selectionStyle.contains(NotusAttribute.color) &&
+          _selectionStyle.value(NotusAttribute.color) == widget.color.value;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    _isToggled = _selectionStyle.contains(NotusAttribute.color);
+    _isToggled = _selectionStyle.contains(NotusAttribute.color) &&
+        _selectionStyle.value(NotusAttribute.color) == widget.color.value;
     widget.controller.addListener(_didChangeEditingValue);
   }
 
@@ -332,7 +333,8 @@ class _ToggleColorButtonState extends State<ToggleColorButton> {
     if (oldWidget.controller != widget.controller) {
       oldWidget.controller.removeListener(_didChangeEditingValue);
       widget.controller.addListener(_didChangeEditingValue);
-      _isToggled = _selectionStyle.contains(NotusAttribute.color);
+      _isToggled = _selectionStyle.contains(NotusAttribute.color) &&
+          _selectionStyle.value(NotusAttribute.color) == widget.color.value;
     }
   }
 
@@ -356,12 +358,11 @@ class _ToggleColorButtonState extends State<ToggleColorButton> {
   }
 
   void _toggleColor() {
-    if (_isToggled) {
-      widget.controller.formatSelection(NotusAttribute.color.unset);
-    } else {
-      widget.controller.formatSelection(
-          NotusAttribute.color.fromColorValue(Colors.red.value));
-    }
+    final attribute = _isToggled
+        ? NotusAttribute.color.unset
+        : NotusAttribute.color.fromColorValue(widget.color.value);
+
+    widget.controller.formatSelection(attribute);
   }
 }
 
