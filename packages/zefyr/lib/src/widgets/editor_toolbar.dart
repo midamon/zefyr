@@ -272,6 +272,99 @@ Widget defaultToggleStyleButtonBuilder(
   );
 }
 
+/// Builder for toolbar buttons handling toggleable style attributes.
+///
+/// See [defaultToggleStyleButtonBuilder] as a reference implementation.
+typedef ToggleColorButtonBuilder = Widget Function(
+  BuildContext context,
+  Color color,
+  bool isToggled,
+  VoidCallback onPressed,
+);
+
+/// Toolbar button which allows to toggle a style attribute on or off.
+class ToggleColorButton extends StatefulWidget {
+  /// Controller attached to a Zefyr editor.
+  final ZefyrController controller;
+
+  /// Builder function to customize visual representation of this button.
+  final ToggleColorButtonBuilder childBuilder;
+
+  /// Circle button's color
+  final Color color;
+
+  ToggleColorButton({
+    Key key,
+    @required this.color,
+    @required this.controller,
+    @required this.childBuilder,
+  })  : assert(color != null),
+        assert(controller != null),
+        assert(childBuilder != null),
+        super(key: key);
+
+  @override
+  _ToggleColorButtonState createState() => _ToggleColorButtonState();
+}
+
+class _ToggleColorButtonState extends State<ToggleColorButton> {
+  bool _isToggled;
+
+  NotusStyle get _selectionStyle => widget.controller.getSelectionStyle();
+
+  void _didChangeEditingValue() {
+    setState(() {
+      _isToggled =
+          widget.controller.getSelectionStyle().contains(NotusAttribute.color);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isToggled = _selectionStyle.contains(NotusAttribute.color);
+    widget.controller.addListener(_didChangeEditingValue);
+  }
+
+  @override
+  void didUpdateWidget(covariant ToggleColorButton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller != widget.controller) {
+      oldWidget.controller.removeListener(_didChangeEditingValue);
+      widget.controller.addListener(_didChangeEditingValue);
+      _isToggled = _selectionStyle.contains(NotusAttribute.color);
+    }
+  }
+
+  @override
+  void dispose() {
+    widget.controller.removeListener(_didChangeEditingValue);
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // If the cursor is currently inside a code block we disable all
+    // toggle style buttons (except the code block button itself) since there
+    // is no point in applying styles to a unformatted block of text.
+    // TODO: Add code block checks to heading and embed buttons as well.
+    final isInCodeBlock =
+        _selectionStyle.containsSame(NotusAttribute.block.code);
+    final isEnabled = !isInCodeBlock;
+    return widget.childBuilder(
+        context, widget.color, _isToggled, isEnabled ? _toggleColor : null);
+  }
+
+  void _toggleColor() {
+    if (_isToggled) {
+      widget.controller.formatSelection(NotusAttribute.color.unset);
+    } else {
+      widget.controller.formatSelection(
+          NotusAttribute.color.fromColorValue(Colors.red.value));
+    }
+  }
+}
+
 /// Toolbar button which allows to apply heading style to a line of text in
 /// Zefyr editor.
 ///

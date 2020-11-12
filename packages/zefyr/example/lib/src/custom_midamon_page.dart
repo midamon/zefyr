@@ -53,11 +53,10 @@ class _CustomMidamonPageState extends State<CustomMidamonPage> {
             SizedBox(height: 12),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: colors.asMap().entries.map((color) {
-                return ToggleStyleButton(
-                  attribute: NotusAttribute.color,
-                  icon: Icons.ac_unit,
+              children: colors.map((color) {
+                return ToggleColorButton(
                   controller: _controller,
+                  color: color,
                   childBuilder: stooryToggleButton,
                 );
               }).toList(),
@@ -72,14 +71,13 @@ class _CustomMidamonPageState extends State<CustomMidamonPage> {
 
 Widget stooryToggleButton(
   BuildContext context,
-  NotusAttribute attribute,
-  IconData icon,
+  Color color,
   bool isToggled,
   VoidCallback onPressed,
 ) {
   return CircleColor(
-    color: Colors.green,
-    innerCircleColor: Colors.green,
+    color: color,
+    innerCircleColor: color,
     borderColor: Colors.greenAccent,
     onPressed: onPressed,
   );

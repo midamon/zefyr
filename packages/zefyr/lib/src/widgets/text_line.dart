@@ -107,8 +107,9 @@ class TextLine extends StatelessWidget {
       result = _mergeTextStyleWithDecoration(result, theme.italic);
     }
     // MUDANÇA DO MIGUEL
-    if (style.containsSame(NotusAttribute.color)) {
-      result = result.merge(theme.color);
+    if (style.contains(NotusAttribute.color)) {
+      final int colorValue = style.value(NotusAttribute.color);
+      result = result.copyWith(color: Color(colorValue));
     }
     // FIM MUDANÇA DO MIGUEL
     if (style.contains(NotusAttribute.link)) {
