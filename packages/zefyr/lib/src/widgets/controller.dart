@@ -206,4 +206,14 @@ class ZefyrController extends ChangeNotifier {
       composing: TextRange.empty,
     );
   }
+
+  /// Helper function to clear all the text in the document
+  void clearAllText() {
+    replaceText(
+      0,
+      document.length - 1,
+      '',
+      selection: TextSelection.collapsed(offset: selection.start),
+    );
+  }
 }

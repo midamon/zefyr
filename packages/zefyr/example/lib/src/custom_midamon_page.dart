@@ -62,7 +62,7 @@ class _CustomMidamonPageState extends State<CustomMidamonPage> {
                 return ToggleColorButton(
                   controller: _controller,
                   color: color,
-                  childBuilder: stooryToggleButton,
+                  childBuilder: colorButtons,
                 );
               }).toList(),
             ),
@@ -74,7 +74,7 @@ class _CustomMidamonPageState extends State<CustomMidamonPage> {
   }
 }
 
-Widget stooryToggleButton(
+Widget colorButtons(
   BuildContext context,
   Color color,
   bool isToggled,
